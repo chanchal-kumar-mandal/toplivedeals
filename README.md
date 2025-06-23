@@ -10,6 +10,25 @@ TopLiveDeals is a dynamic web application designed to be your ultimate destinati
 
 ---
 
+## Live App: https://chanchal-kumar-mandal.github.io/toplivedeals/
+
+## Demo Screenshots
+# Desktop
+![image](https://github.com/user-attachments/assets/c1dcd537-090a-4c12-9718-5d291c7ff952)
+![image](https://github.com/user-attachments/assets/6e9f473f-bb0a-4592-807e-41ffb831ced5)
+![image](https://github.com/user-attachments/assets/19c95a20-1f1f-4bb5-bf94-cdd268f30a04)
+
+# Mobile
+![image](https://github.com/user-attachments/assets/2afc6030-a781-4c3e-80d6-19bb2b5bcde7)
+![image](https://github.com/user-attachments/assets/f7c851fb-9157-4c8a-b6da-ef0e2dcb055a)
+
+# Firestore Database Data
+![image](https://github.com/user-attachments/assets/60ee58fe-7462-4d16-811f-27af2cecab03)
+
+![learningboxpro-img-users-data-in-firestore-database-2](https://github.com/user-attachments/assets/b5a7cabb-a3f1-4a5e-94f8-cc66bb0522f9)
+
+---
+
 ## Version 1: Key Features & Functions
 
 The initial version of TopLiveDeals focuses on delivering a streamlined deal discovery experience:
