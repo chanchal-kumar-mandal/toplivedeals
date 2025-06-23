@@ -209,7 +209,7 @@ To deploy your application to GitHub Pages, follow these steps (assuming you've 
 	"scripts": {
      //add these 2 lines
 	  "predeploy": "npm run build",
-	  "deploy": "gh-pages -d build"
+	  "deploy": "gh-pages -d dist"
 	}
     Add base: '/toplivedeals/', after plugins: [react()], in vite.config.js
 5. Build and Deploy Your React App
