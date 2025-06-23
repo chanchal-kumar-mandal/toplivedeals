@@ -168,6 +168,47 @@ To deploy your application to GitHub Pages, follow these steps (assuming you've 
     * Under "Branch," select the `gh-pages` branch and click "Save."
     * Your live site URL will be displayed there once deployed (e.g., `https://YOUR_USERNAME.github.io/YOUR_REPO_NAME`).
 
+
+### Set up Github Hosting 
+1. Create a GitHub Repository
+	Go to GitHub and create a new repository for your project.
+	Initialize the repository with a README if you like.
+2. Push Your React App to GitHub (if not already done)
+
+	git init  # Initialize git if not done already
+	git remote add origin https://github.com/username/repository-name.git  # Replace with your repository URL
+	git add .
+	git commit -m "Initial commit"
+	git push -u origin main  # Push to the main branch
+3. Install gh-pages Package
+	$npm install gh-pages --save-dev
+4. Add Scripts to package.json
+	Open package.json and add the following:
+	"homepage": "https://yourusername.github.io/repository-name"
+
+	Update the scripts section in package.json to include deployment commands.
+	"scripts": {
+     //add these 2 lines
+	  "predeploy": "npm run build",
+	  "deploy": "gh-pages -d build"
+	}
+    Add base: '/toplivedeals/', after plugins: [react()], in vite.config.js
+5. Build and Deploy Your React App
+	$npm run build
+	$npm run deploy
+6. Enable GitHub Pages in Repository Settings
+	Go to your repository on GitHub.
+	Click on Settings (on the right side).
+	Scroll down to the Pages section in the left sidebar.
+	Under Source, select gh-pages branch.
+	Click Save.
+	Your site will now be available at: arduino
+	Copy code
+	https://username.github.io/repository-name/
+7. Access Your Hosted React App
+	Your React app will be live at https://yourusername.github.io/repository-name/.
+
+
 ---
 
 ## Gemini AI Help
