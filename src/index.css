@@ -1,0 +1,31 @@
+/* src/index.css */
+
+/* 1. Import Bootstrap CSS first */
+@import 'bootstrap/dist/css/bootstrap.min.css';
+
+/* 2. Import your custom App.css (it will override Bootstrap where needed) */
+@import './App.css';
+
+/* 3. Keep only absolutely essential, global overrides if any (rarely needed) */
+
+/* Basic reset to ensure consistent box-sizing */
+html {
+  box-sizing: border-box;
+}
+*, *::before, *::after {
+  box-sizing: inherit;
+}
+
+/* Optional: If you want to ensure the app always fills the viewport height */
+html, body, #root {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden; /* Prevent horizontal scroll from minor overflows */
+}
+
+/* Ensure #root div takes full height and flexes */
+#root {
+  display: flex;
+  flex-direction: column;
+}
