@@ -10,10 +10,6 @@ import './index.css';
 // Bootstrap CSS and JS (first to ensure its resets apply)
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
-
-// Custom Swiper CSS
-import './swiper-custom.css';
-
 // Your application-specific CSS (should generally be last to override others)
 import './App.css';
 

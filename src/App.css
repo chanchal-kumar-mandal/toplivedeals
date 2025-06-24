@@ -1084,6 +1084,39 @@ body {
   border-radius: 8px;
 }
 
+.footer-links-row {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+.footer-link {
+  color: var(--dark-gray);
+  text-decoration: none;
+  font-size: 0.75rem;
+  transition: color 0.2s;
+}
+
+.footer-link:hover {
+  color: var(--primary-blue);
+  text-decoration: underline;
+}
+
+.footer-note {
+  font-size: 0.7rem;
+  color: var(--dark-gray);
+  line-height: 1.4;
+}
+
+.static-page {
+  padding: 2rem var(--content-padding-x-desktop);
+  max-width: 800px;
+  margin: 0 auto;
+  text-align: center;
+}
+
 .auth-footer-text {
   margin-top: 1.5rem;
   font-size: 0.9rem;
@@ -1424,4 +1457,69 @@ body {
         padding-right: var(--content-padding-x-small-mobile);
         font-size: 0.6rem;
     }
+
+}
+
+/* Admin product, user menu styles */
+
+/* ✅ Make dropdowns mobile-safe by avoiding fixed width and using max-width + scroll if needed */
+.user-dropdown,
+.submenu {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  margin-top: 0.5rem;
+  background: #fff;
+  border-radius: 0.4rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  z-index: 999;
+  padding: 0.75rem;
+  width: 220px;
+  max-width: 95vw;
+  box-sizing: border-box;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+/* 🔐 Mobile override: reposition + auto width */
+@media (max-width: 768px) {
+  .user-dropdown,
+  .submenu {
+    left: 50%;
+    transform: translateX(-50%);
+    width: 90vw;
+    max-width: 90vw;
+  }
+}
+
+.user-dropdown-item,
+.submenu-item {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.4rem 0;
+  color: #333;
+  text-decoration: none;
+  font-size: 0.9rem;
+}
+
+.user-dropdown-item:hover,
+.submenu-item:hover {
+  color: #007bff;
+}
+
+.user-info {
+  border-bottom: 1px solid #eee;
+  padding-bottom: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.user-info strong {
+  display: block;
+  font-size: 0.95rem;
+}
+
+.user-info p {
+  font-size: 0.85rem;
+  color: #555;
 }
