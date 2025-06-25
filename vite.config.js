@@ -7,5 +7,5 @@ export default defineConfig({
   // FIX: Add the 'base' property for GitHub Pages deployment.
   // Replace 'YOUR_REPO_NAME' with the actual name of your GitHub repository.
   // Example: If your repo is 'toplivedeal', it would be '/toplivedeals/'
-  base: '/',
+  base: '/toplivedeals/',
 });

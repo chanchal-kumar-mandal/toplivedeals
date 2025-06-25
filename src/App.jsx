@@ -84,7 +84,20 @@ function App() {
     return (
       <header className="main-header">
         <div className="header-content-wrapper">
-          <Link to="/" className="logo" onClick={() => setOpenDropdown(null)}>Top Live Deals</Link>
+          <div className="logo-wrapper">
+            <img
+              src="/TLD-logo-150.png"
+              alt="Top Live Deals Logo"
+              className="logo-image"
+            />
+            <Link
+              to="/"
+              className="logo"
+              onClick={() => setOpenDropdown(null)}
+            >
+              Top Live Deals
+            </Link>
+          </div>
           <div className="nav-links">
             <Link to="/" className={`nav-item ${activeTab === 'liveDeals' ? 'active' : ''}`} onClick={() => setActiveTab('liveDeals')}>Live Deals</Link>
             <Link to="/" className={`nav-item ${activeTab === 'topDeals' ? 'active' : ''}`} onClick={() => setActiveTab('topDeals')}>Top Deals</Link>
