@@ -14,6 +14,7 @@ import { subscribeToProducts } from './utils/dataProcessor';
 import { FirebaseProvider, useFirebase } from './contexts/FirebaseContext';
 import { AuthProvider, useAuth } from './contexts/UserAuthContext';
 import { FaSearch, FaBars, FaTimes, FaChevronDown, FaChevronUp, FaUserCircle, FaSignOutAlt, FaSignInAlt, FaUserPlus, FaUserEdit, FaCog, FaAngleDown, FaAngleUp } from 'react-icons/fa';
+import logo from './assets/TLD-logo-150.png';
 
 function App() {
   const { db } = useFirebase();
@@ -85,11 +86,7 @@ function App() {
       <header className="main-header">
         <div className="header-content-wrapper">
           <div className="logo-wrapper">
-            <img
-              src="/TLD-logo-150.png"
-              alt="Top Live Deals Logo"
-              className="logo-image"
-            />
+            <img src={logo} alt="Top Live Deals Logo" className="logo-image" />
             <Link
               to="/"
               className="logo"
