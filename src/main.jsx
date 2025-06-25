@@ -16,7 +16,7 @@ import './App.css';
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     {/* Wrap your App component (or your top-level component that uses routing) */}
-    <BrowserRouter>
+    <BrowserRouter basename="/toplivedeals">
       <App />
     </BrowserRouter>
   </React.StrictMode>,
