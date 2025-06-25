@@ -1,6 +1,7 @@
 // Import required dependencies
 import React, { useState, useEffect, useCallback } from 'react';
 import { BrowserRouter as Router, Routes, Route, Link, useNavigate, useLocation } from 'react-router-dom';
+import PrivateRoute from './routes/PrivateRoute';
 import AboutUs from './pages/AboutUs';
 import ContactUs from './pages/ContactUs';
 import TermsConditions from './pages/TermsConditions';
@@ -221,7 +222,12 @@ function App() {
           <Route path="/" element={<><h2 className="section-title">{activeTab === 'liveDeals' ? 'All Live Deals' : activeTab === 'topDeals' ? 'Top Deals' : 'Deals with Coupons'}</h2><div className="product-grid">{filteredProducts.length > 0 ? filteredProducts.map(product => (<div key={product.id} className="product-card-wrapper"><ProductCard product={product} /></div>)) : (<p className="no-products-message">No products found matching your criteria.</p>)}</div></>} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
-          <Route path="/admin" element={<ProtectedRoute />}><Route path="products/*" element={<ProductDataManager />} /></Route>
+          <Route path="/admin" element={<ProtectedRoute />}>
+          <Route path="products/*" element={
+            <PrivateRoute>
+              <ProductDataManager />
+            </PrivateRoute>} />
+          </Route>
           <Route path="/about-us" element={<AboutUs />} />
           <Route path="/contact-us" element={<ContactUs />} />
           <Route path="/terms-conditions" element={<TermsConditions />} />

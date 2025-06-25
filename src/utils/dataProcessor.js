@@ -40,6 +40,7 @@ export const subscribeToProducts = (db, setProducts, setError) => {
         category: data.category?.toLowerCase() || 'uncategorized',
         application: data.application?.toLowerCase() || 'other',
         isTopDeal: Boolean(data.isTopDeal),
+        isActive: data.isActive === undefined ? true : Boolean(data.isActive), 
       };
     });
     setProducts(productsData);

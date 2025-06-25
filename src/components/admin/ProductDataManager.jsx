@@ -1,40 +1,65 @@
 // src/components/ProductDataManager.jsx
-import React, { useState, useEffect, useCallback } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { FaTrash, FaEdit, FaImage, FaLink, FaTags, FaStar, FaPercentage, FaTicketAlt  } from 'react-icons/fa';
-import { Button, Modal, Form, Row, Col, Table, Container, InputGroup } from 'react-bootstrap';
+import { useAuth } from '../../contexts/UserAuthContext';
+import { Navigate } from 'react-router-dom'; // redirect unauthorized users
+import React, { useState, useEffect } from 'react';
+import { FaTrash, FaEdit, FaImage, FaLink, FaTags, FaStar, FaPercentage, FaTicketAlt, FaPlus, FaExternalLinkAlt } from 'react-icons/fa';
+import { Button, Modal, Form, Row, Col, Table, Container, Pagination } from 'react-bootstrap';
 import { useFirebase } from '../../contexts/FirebaseContext';
 import { subscribeToProducts, addProduct, updateProduct, deleteProduct } from '../../utils/dataProcessor';
 
 const ProductDataManager = () => {
-  const navigate = useNavigate();
+  const { currentUser, loadingAuth } = useAuth();
+
+  if (loadingAuth) {
+    return <div>Loading authentication...</div>;
+  }
+
+  if (!currentUser) {
+    return <Navigate to="/login" replace />;
+  }
+
   const { db } = useFirebase();
 
   const [products, setProducts] = useState([]);
   const [showModal, setShowModal] = useState(false);
-  const [mode, setMode] = useState('add'); // 'add' | 'edit'
+  const [mode, setMode] = useState('add');
   const [editingId, setEditingId] = useState(null);
 
   const [productForm, setProductForm] = useState({
     title: '', description: '', images: '', affiliateLink: '',
     priceBefore: '', priceAfter: '', discount: '', rating: '', ratingCount: '',
-    couponCode: '', postedAgo: '', category: 'electronics', application: 'amazon', isTopDeal: false,
+    couponCode: '', postedAgo: '', category: 'electronics', application: 'amazon', isTopDeal: false, isActive: true,
   });
 
   const [errors, setErrors] = useState({});
   const [message, setMessage] = useState('');
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   const [productToDelete, setProductToDelete] = useState(null);
+  const previewImage = productForm.images?.split(',')[0]?.trim();
+
+  const [searchTerm, setSearchTerm] = useState('');
+  const [filterPlatform, setFilterPlatform] = useState('');
+  const [filterCategory, setFilterCategory] = useState('');
+  const [filterActive, setFilterActive] = useState('');
+  const [sortConfig, setSortConfig] = useState({ key: 'createdAt', direction: 'desc' });
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 10;
 
   const categories = ['electronics', 'books', 'fashion', 'home', 'sports', 'kitchen', 'automotive', 'health'];
   const platforms = ['amazon', 'flipkart', 'meesho', 'myntra', 'nykaa', 'cultfit', 'ajio'];
 
   useEffect(() => {
-    if (db) {
-      const unsubscribe = subscribeToProducts(db, setProducts, (errMessage) => setMessage(`Error: ${errMessage}`));
-      return () => unsubscribe();
-    }
-  }, [db]);
+  if (db) {
+    const unsubscribe = subscribeToProducts(db, setProducts, (err) => {
+      if (err) {
+        setMessage(`Error: ${err}`);
+      } else {
+        setMessage(""); // clear only on successful load
+      }
+    });
+    return () => unsubscribe();
+  }
+}, [db]);
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -46,7 +71,7 @@ const ProductDataManager = () => {
     setProductForm({
       title: '', description: '', images: '', affiliateLink: '',
       priceBefore: '', priceAfter: '', discount: '', rating: '', ratingCount: '',
-      couponCode: '', postedAgo: '', category: 'electronics', application: 'amazon', isTopDeal: false,
+      couponCode: '', postedAgo: '', category: 'electronics', application: 'amazon', isTopDeal: false, isActive: true,
     });
     setEditingId(null);
     setMode('add');
@@ -87,6 +112,14 @@ const ProductDataManager = () => {
       ratingCount: Number(productForm.ratingCount),
       images: productForm.images.split(',').map(i => i.trim()).join(','),
     };
+
+     // Only include createdAt if adding or if it already exists
+    if (mode === 'add') {
+      data.createdAt = new Date().toISOString();
+    } else if (productForm.createdAt) {
+      data.createdAt = productForm.createdAt;
+    }
+
     try {
       if (mode === 'add') {
         await addProduct(db, data);
@@ -118,38 +151,83 @@ const ProductDataManager = () => {
     }
   };
 
-  const previewImage = productForm.images.split(',')[0]?.trim();
+  const handleSort = (key) => {
+    setSortConfig(prev => ({
+      key,
+      direction: prev.key === key && prev.direction === 'asc' ? 'desc' : 'asc'
+    }));
+  };
+
+  const filtered = products.filter(p =>
+    (!searchTerm || p.title?.toLowerCase().includes(searchTerm.toLowerCase())) &&
+    (!filterPlatform || p.application === filterPlatform) &&
+    (!filterCategory || p.category === filterCategory) &&
+    (!filterActive || String(p.isActive) === filterActive)
+  );
+
+  const sorted = [...filtered].sort((a, b) => {
+    const dir = sortConfig.direction === 'asc' ? 1 : -1;
+    return a[sortConfig.key] > b[sortConfig.key] ? dir : a[sortConfig.key] < b[sortConfig.key] ? -dir : 0;
+  });
+
+  const paginated = sorted.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
+  const totalPages = Math.ceil(sorted.length / itemsPerPage);
+
+  const goToPrevPage = () => setCurrentPage(prev => Math.max(prev - 1, 1));
+  const goToNextPage = () => setCurrentPage(prev => Math.min(prev + 1, totalPages));
 
   return (
     <Container fluid className="py-4">
-      <Row className="mb-3">
-        <Col><h2>Manage Products</h2></Col>
-        <Col className="text-end">
-          <Button onClick={openAddModal}>Add New Product</Button>
+      <Row className="mb-3 align-items-end">
+        <Col md={3}><Form.Control placeholder="Search Title..." value={searchTerm} onChange={e => setSearchTerm(e.target.value)} /></Col>
+        <Col md={2}><Form.Select value={filterPlatform} onChange={e => setFilterPlatform(e.target.value)}><option value="">All Platforms</option>{platforms.map(p => <option key={p}>{p}</option>)}</Form.Select></Col>
+        <Col md={2}><Form.Select value={filterCategory} onChange={e => setFilterCategory(e.target.value)}><option value="">All Categories</option>{categories.map(c => <option key={c}>{c}</option>)}</Form.Select></Col>
+        <Col md={2}><Form.Select value={filterActive} onChange={e => setFilterActive(e.target.value)}><option value="">All</option><option value="true">Active</option><option value="false">Inactive</option></Form.Select></Col>
+        <Col md={3} className="text-end">
+          <Button variant="success" onClick={openAddModal}><FaPlus /> Add New Product</Button>
         </Col>
       </Row>
 
-      {message && <div className="alert alert-info">{message}</div>}
+      {message && (
+        <div className={`alert ${message.toLowerCase().includes('error') ? 'alert-danger' : 'alert-success'}`}>
+          {message}
+        </div>
+      )}
+
+      <div className="d-flex justify-content-between align-items-center mt-3">
+        <div>
+          Showing {paginated.length} of {sorted.length} products
+        </div>
+        <Pagination>
+          <Pagination.Prev disabled={currentPage === 1} onClick={goToPrevPage} />
+          {[...Array(totalPages)].map((_, i) => (
+            <Pagination.Item key={i} active={i + 1 === currentPage} onClick={() => setCurrentPage(i + 1)}>{i + 1}</Pagination.Item>
+          ))}
+          <Pagination.Next disabled={currentPage === totalPages} onClick={goToNextPage} />
+        </Pagination>
+      </div>
 
       <Table bordered striped hover responsive>
         <thead>
           <tr>
-            <th>Title</th>
+            <th onClick={() => handleSort('title')}>Title</th>
             <th>Platform</th>
             <th>Category</th>
             <th>Price Before</th>
             <th>Price After</th>
             <th>Discount</th>
             <th>Rating</th>
-            <th>Rating Count</th>
-            <th>Coupon Code</th>
+            <th>Count</th>
+            <th>Coupon</th>
             <th>Posted Ago</th>
             <th>Top Deal</th>
+            <th>Active</th>
+            <th>Link</th>
             <th>Actions</th>
           </tr>
         </thead>
         <tbody>
-          {products.map(p => (
+          {paginated.map(p => (
             <tr key={p.id}>
               <td>{p.title}</td>
               <td>{p.application}</td>
@@ -161,7 +239,9 @@ const ProductDataManager = () => {
               <td>{p.ratingCount}</td>
               <td>{p.couponCode}</td>
               <td>{p.postedAgo}</td>
-              <td>{p.isTopDeal ? 'Yes' : 'No'}</td>
+              <td>{p.isTopDeal ? '✔️' : ''}</td>
+              <td>{p.isActive ? '✅' : '❌'}</td>
+              <td><a href={p.affiliateLink} target="_blank" rel="noopener noreferrer"><FaExternalLinkAlt /></a></td>
               <td>
                 <Button size="sm" variant="warning" onClick={() => openEditModal(p)}><FaEdit /></Button>{' '}
                 <Button size="sm" variant="danger" onClick={() => handleDeleteConfirm(p.id)}><FaTrash /></Button>
@@ -202,6 +282,7 @@ const ProductDataManager = () => {
               <Col md={3}><Form.Group><Form.Label>Platform</Form.Label><Form.Select name="application" value={productForm.application} onChange={handleChange} isInvalid={!!errors.application}>{platforms.map(p => <option key={p}>{p}</option>)}</Form.Select><Form.Control.Feedback type="invalid">{errors.application}</Form.Control.Feedback></Form.Group></Col>
             </Row>
             <Form.Check className="mt-2" type="checkbox" label="Top Deal" name="isTopDeal" checked={productForm.isTopDeal} onChange={handleChange} />
+            <Form.Check className="mt-2" type="checkbox" label="Active" name="isActive" checked={productForm.isActive} onChange={handleChange} />
           </Form>
         </Modal.Body>
         <Modal.Footer>
