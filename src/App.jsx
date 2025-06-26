@@ -16,6 +16,7 @@ import { FirebaseProvider, useFirebase } from './contexts/FirebaseContext';
 import { AuthProvider, useAuth } from './contexts/UserAuthContext';
 import { FaSearch, FaBars, FaTimes, FaChevronDown, FaChevronUp, FaUserCircle, FaSignOutAlt, FaSignInAlt, FaUserPlus, FaUserEdit, FaCog, FaAngleDown, FaAngleUp } from 'react-icons/fa';
 import logo from './assets/TLD-logo-150.png';
+import Loader from './components/shared/Loader';
 
 function App() {
   const { db } = useFirebase();
@@ -28,6 +29,7 @@ function App() {
   const [searchTerm, setSearchTerm] = useState('');
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [openDropdown, setOpenDropdown] = useState(null);
+  const [loadingProducts, setLoadingProducts] = useState(true);
 
   const location = useLocation();
   const isAdminRoute = location.pathname.startsWith('/admin');
@@ -38,12 +40,26 @@ function App() {
 
   useEffect(() => {
     if (db) {
-      const unsubscribe = subscribeToProducts(db, setProducts, (err) => console.error(err));
+      const unsubscribe = subscribeToProducts(
+        db,
+        (products) => {
+          setProducts(products);
+          setLoadingProducts(false); // ✅ hide loader after fetch
+        },
+        (err) => {
+          console.error(err);
+          setLoadingProducts(false); // ✅ also hide on error
+        }
+      );
       return () => unsubscribe();
     }
   }, [db]);
 
-  const filteredProducts = products.filter(product => {
+  const filteredProducts = products
+  .filter(product => {
+    // Only include active products
+    const isActive = product.active !== false;
+
     const productCategory = product.category?.toLowerCase() ?? '';
     const productApplication = product.application?.toLowerCase() ?? '';
     const productTitle = product.title?.toLowerCase() ?? '';
@@ -52,18 +68,36 @@ function App() {
     const matchesPlatform = selectedPlatform === 'all' || productApplication === selectedPlatform;
     const matchesSearch = productTitle.includes(searchTerm.toLowerCase());
 
+    // Tab-specific filtering
     let matchesTab = true;
-    if (activeTab === 'topDeals') matchesTab = product.isTopDeal;
-    if (activeTab === 'coupons') matchesTab = product.couponCode !== null && product.couponCode !== '';
+    if (activeTab === 'topDeals') {
+      matchesTab = product.isTopDeal === true;
+    } else if (activeTab === 'coupons') {
+      matchesTab = !!product.couponCode?.trim();
+    }
 
+    // Discount range filter
     let matchesDiscount = true;
     if (selectedDiscountRange !== 'all') {
-      const minDiscount = parseInt(selectedDiscountRange);
+      const minDiscount = parseInt(selectedDiscountRange, 10);
       matchesDiscount = (product.discount ?? 0) >= minDiscount;
     }
 
-    return matchesCategory && matchesPlatform && matchesSearch && matchesTab && matchesDiscount;
+    return (
+      isActive &&
+      matchesCategory &&
+      matchesPlatform &&
+      matchesSearch &&
+      matchesTab &&
+      matchesDiscount
+    );
+  })
+  .sort((a, b) => {
+    const aTime = a.createdAt?.seconds ?? 0;
+    const bTime = b.createdAt?.seconds ?? 0;
+    return bTime - aTime; // Newest first
   });
+
 
   const toggleMobileMenu = () => setIsMobileMenuOpen(!isMobileMenuOpen);
   const handleCategoryClick = (cat) => setSelectedCategory(cat);
@@ -219,7 +253,38 @@ function App() {
       {isMobileMenuOpen && <div className="overlay" onClick={toggleMobileMenu}></div>}
       <main className="content-area">
         <Routes>
-          <Route path="/" element={<><h2 className="section-title">{activeTab === 'liveDeals' ? 'All Live Deals' : activeTab === 'topDeals' ? 'Top Deals' : 'Deals with Coupons'}</h2><div className="product-grid">{filteredProducts.length > 0 ? filteredProducts.map(product => (<div key={product.id} className="product-card-wrapper"><ProductCard product={product} /></div>)) : (<p className="no-products-message">No products found matching your criteria.</p>)}</div></>} />
+          <Route
+            path="/"
+            element={
+              <>
+                <h2 className="section-title">
+                  {activeTab === 'liveDeals'
+                    ? 'All Live Deals'
+                    : activeTab === 'topDeals'
+                    ? 'Top Deals'
+                    : 'Deals with Coupons'}
+                </h2>
+
+                {loadingProducts ? (
+                  <Loader message="Top Live Deals - Latest Discounts, Coupons & Offers..." />
+                ) : (
+                  <div className="product-grid">
+                    {filteredProducts.length > 0 ? (
+                      filteredProducts.map(product => (
+                        <div key={product.id} className="product-card-wrapper">
+                          <ProductCard product={product} />
+                        </div>
+                      ))
+                    ) : (
+                      <p className="no-products-message">
+                        No products found matching your criteria.
+                      </p>
+                    )}
+                  </div>
+                )}
+              </>
+            }
+          />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/admin" element={<ProtectedRoute />}>

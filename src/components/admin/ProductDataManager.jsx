@@ -6,6 +6,8 @@ import { FaTrash, FaEdit, FaImage, FaLink, FaTags, FaStar, FaPercentage, FaTicke
 import { Button, Modal, Form, Row, Col, Table, Container, Pagination } from 'react-bootstrap';
 import { useFirebase } from '../../contexts/FirebaseContext';
 import { subscribeToProducts, addProduct, updateProduct, deleteProduct } from '../../utils/dataProcessor';
+import { serverTimestamp, Timestamp } from "firebase/firestore";
+
 
 const ProductDataManager = () => {
   const { currentUser, loadingAuth } = useAuth();
@@ -29,6 +31,7 @@ const ProductDataManager = () => {
     title: '', description: '', images: '', affiliateLink: '',
     priceBefore: '', priceAfter: '', discount: '', rating: '', ratingCount: '',
     couponCode: '', postedAgo: '', category: 'electronics', application: 'amazon', isTopDeal: false, isActive: true,
+    createdAt: '', updatedAt: '',
   });
 
   const [errors, setErrors] = useState({});
@@ -71,7 +74,7 @@ const ProductDataManager = () => {
     setProductForm({
       title: '', description: '', images: '', affiliateLink: '',
       priceBefore: '', priceAfter: '', discount: '', rating: '', ratingCount: '',
-      couponCode: '', postedAgo: '', category: 'electronics', application: 'amazon', isTopDeal: false, isActive: true,
+      couponCode: '', postedAgo: '', category: 'electronics', application: 'amazon', isTopDeal: false, isActive: true, createdAt: '', updatedAt: ''
     });
     setEditingId(null);
     setMode('add');
@@ -92,9 +95,9 @@ const ProductDataManager = () => {
     if (!productForm.affiliateLink) errs.affiliateLink = 'Affiliate link is required';
     if (!productForm.priceBefore) errs.priceBefore = 'Price before is required';
     if (!productForm.priceAfter) errs.priceAfter = 'Price after is required';
-    if (!productForm.discount) errs.discount = 'Discount is required';
-    if (!productForm.rating) errs.rating = 'Rating is required';
-    if (!productForm.ratingCount) errs.ratingCount = 'Rating count is required';
+    if (productForm.discount === '' || productForm.discount === null) productForm.discount = 0;
+    if (productForm.rating === '' || productForm.rating === null) productForm.rating = 0;
+    if (productForm.ratingCount === '' || productForm.ratingCount === null) productForm.ratingCount = 0;
     if (!productForm.category) errs.category = 'Category is required';
     if (!productForm.application) errs.application = 'Platform is required';
     setErrors(errs);
@@ -103,35 +106,49 @@ const ProductDataManager = () => {
 
   const handleSubmit = async () => {
     if (!db || !validateForm()) return;
+
+    const now = serverTimestamp();
+
     const data = {
       ...productForm,
       priceBefore: Number(productForm.priceBefore),
       priceAfter: Number(productForm.priceAfter),
-      discount: Number(productForm.discount),
-      rating: Number(productForm.rating),
-      ratingCount: Number(productForm.ratingCount),
+      discount: Number(productForm.discount) || 0,
+      rating: Number(productForm.rating) || 0,
+      ratingCount: Number(productForm.ratingCount) || 0,
       images: productForm.images.split(',').map(i => i.trim()).join(','),
     };
 
-     // Only include createdAt if adding or if it already exists
     if (mode === 'add') {
-      data.createdAt = new Date().toISOString();
-    } else if (productForm.createdAt) {
-      data.createdAt = productForm.createdAt;
-    }
-
-    try {
-      if (mode === 'add') {
+      data.createdAt = now;
+      data.updatedAt = now;
+      try {
         await addProduct(db, data);
         setMessage('Product added successfully');
-      } else if (mode === 'edit' && editingId) {
+      } catch (e) {
+        setMessage('Operation failed: ' + e.message);
+        return;
+      }
+    } else if (mode === 'edit' && editingId) {
+      // Only assign createdAt if it already existed
+      if (productForm.createdAt) {
+        data.createdAt = productForm.createdAt;
+      } else {
+        data.createdAt = now; // fallback for legacy
+      }
+      data.updatedAt = now;
+      try {
         await updateProduct(db, editingId, data);
         setMessage('Product updated successfully');
+      } catch (e) {
+        setMessage('Operation failed: ' + e.message);
+        return;
       }
-      setShowModal(false);
-    } catch (e) {
-      setMessage('Operation failed: ' + e.message);
     }
+
+    // ✅ Only close modal if operation succeeded
+    setShowModal(false);
+
   };
 
   const handleDeleteConfirm = (id) => {
@@ -224,6 +241,8 @@ const ProductDataManager = () => {
             <th>Active</th>
             <th>Link</th>
             <th>Actions</th>
+            <th>Created At</th>
+            <th>Updated At</th>
           </tr>
         </thead>
         <tbody>
@@ -246,6 +265,8 @@ const ProductDataManager = () => {
                 <Button size="sm" variant="warning" onClick={() => openEditModal(p)}><FaEdit /></Button>{' '}
                 <Button size="sm" variant="danger" onClick={() => handleDeleteConfirm(p.id)}><FaTrash /></Button>
               </td>
+              <td>{p.createdAt?.seconds ? new Date(p.createdAt.seconds * 1000).toLocaleDateString() : ''}</td>
+              <td>{p.updatedAt?.seconds ? new Date(p.updatedAt.seconds * 1000).toLocaleDateString() : ''}</td>
             </tr>
           ))}
         </tbody>
@@ -283,6 +304,28 @@ const ProductDataManager = () => {
             </Row>
             <Form.Check className="mt-2" type="checkbox" label="Top Deal" name="isTopDeal" checked={productForm.isTopDeal} onChange={handleChange} />
             <Form.Check className="mt-2" type="checkbox" label="Active" name="isActive" checked={productForm.isActive} onChange={handleChange} />
+            <Row className="mt-3">
+              <Col md={6}>
+                <Form.Group>
+                  <Form.Label>Created At</Form.Label>
+                  <Form.Control
+                    type="text"
+                    value={productForm.createdAt?.seconds ? new Date(productForm.createdAt.seconds * 1000).toLocaleString() : ''}
+                    disabled
+                  />
+                </Form.Group>
+              </Col>
+              <Col md={6}>
+                <Form.Group>
+                  <Form.Label>Updated At</Form.Label>
+                  <Form.Control
+                    type="text"
+                    value={productForm.updatedAt?.seconds ? new Date(productForm.updatedAt.seconds * 1000).toLocaleString() : ''}
+                    disabled
+                  />
+                </Form.Group>
+              </Col>
+            </Row>
           </Form>
         </Modal.Body>
         <Modal.Footer>

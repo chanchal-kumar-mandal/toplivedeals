@@ -2,6 +2,7 @@ import React, { createContext, useContext, useState, useEffect } from 'react';
 import { initializeApp } from 'firebase/app';
 import { getAuth, signInWithCustomToken, onAuthStateChanged, signInAnonymously } from 'firebase/auth';
 import { getFirestore } from 'firebase/firestore';
+import Loader from '../components/shared/Loader';
 
 const FirebaseContext = createContext(null);
 
@@ -81,11 +82,7 @@ export const FirebaseProvider = ({ children }) => {
 
   // Display a loading state if Firebase isn't ready
   if (loadingFirebase) {
-    return (
-      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh', fontSize: '1.5rem', color: '#333' }}>
-        Loading Firebase...
-      </div>
-    );
+    return <Loader message="Top Live Deals - Latest Discounts, Coupons & Offers..." />;
   }
 
   return (

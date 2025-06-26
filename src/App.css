@@ -441,7 +441,7 @@ body {
 
 /* ==== Content Area & Product Grid ==== */
 .content-area {
-  padding: 1.2rem var(--content-padding-x-desktop);
+  padding: 0.5rem 1.2rem var(--content-padding-x-desktop);
   min-height: calc(100vh - 180px);
   box-sizing: border-box;
 }
@@ -461,10 +461,12 @@ body {
     padding: 2rem 0;
 }
 
+/* Product Grid Card Styles */
+
 .product-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-  gap: 16px;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); /* from 260px to 200px */
+  gap: 14px; /* slightly reduced gap */
   justify-items: center;
   padding: 0;
   max-width: 100%;
@@ -479,7 +481,7 @@ body {
 /* ==== Product Card (Dynamic Height Info) ==== */
 .card {
   background: var(--white);
-  border-radius: 10px;
+  border-radius: 8px;
   box-shadow: var(--card-shadow);
   transition: transform 0.2s, box-shadow 0.2s;
   overflow: hidden;
@@ -502,8 +504,8 @@ body {
   background: var(--accent-green);
   color: var(--white);
   padding: 3px 6px;
-  font-size: 9px;
-  font-weight: 600;
+  font-size: 10px;
+  font-weight: 700;
   letter-spacing: 0.2px;
   text-transform: uppercase;
   border-radius: 6px;
@@ -513,7 +515,7 @@ body {
 
 .img-container {
   width: 100%;
-  padding-bottom: 75%;
+  padding-bottom: 65%;
   position: relative;
   overflow: hidden;
   display: flex;
@@ -561,8 +563,8 @@ body {
 .feats {
   display: flex;
   flex-wrap: wrap;
-  gap: 4px;
-  margin-bottom: 4px;
+  gap: 2px;
+  margin-bottom: 2px;
 }
 .feat {
   font-size: 8px;
@@ -574,7 +576,7 @@ body {
   cursor: pointer;
   display: flex;
   align-items: center;
-  gap: 3px;
+  gap: 2px;
   transition: background-color 0.2s, border-color 0.2s, color 0.2s;
   border: 1px solid var(--medium-gray);
 }
@@ -588,9 +590,8 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: flex-end;
-  margin-bottom: 4px;
   flex-wrap: wrap;
-  gap: 6px;
+  gap: 4px;
 }
 .price {
   display: flex;
@@ -614,13 +615,13 @@ body {
   color: var(--white);
   border: none;
   border-radius: 6px;
-  padding: 7px 14px;
+  padding: 6px 12px;
   font-size: 13px;
   font-weight: 500;
   cursor: pointer;
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 4px;
   transition: 0.2s ease-in-out;
   box-shadow: var(--btn-shadow);
   position: relative;
@@ -660,7 +661,6 @@ body {
   align-items: center;
   border-top: 1px solid var(--medium-gray);
   padding-top: 4px;
-  margin-top: 4px;
 }
 .rating {
   display: flex;
@@ -673,8 +673,8 @@ body {
     color: #FFC107;
 }
 .rcount {
-  margin-left: 3px;
-  font-size: 9px;
+  margin: 5px 0 0 3px;
+  font-size: 10px;
   color: var(--dark-gray);
   white-space: nowrap;
 }
@@ -684,9 +684,9 @@ body {
   display: flex;
   align-items: center;
   gap: 3px;
-  font-weight: 600;
+  font-weight: 700;
   color: var(--dark-text);
-  font-size: 11px;
+  font-size: 12px;
   white-space: nowrap;
 }
 .platform-display .platform-logo {
@@ -695,7 +695,7 @@ body {
   object-fit: contain;
 }
 .platform-display .platform-name {
-    font-size: 11px;
+    font-size: 12px;
     font-weight: 700;
 }
 
@@ -1394,7 +1394,6 @@ body {
   }
   .meta {
     padding-top: 3px;
-    margin-top: 3px;
   }
 
   .product-list-item {
@@ -1551,4 +1550,27 @@ body {
 .user-info p {
   font-size: 0.85rem;
   color: #555;
+}
+/* src/components/common/Loader.css */
+
+.loader-container {
+  height: 100vh;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: #ffffff;
+  text-align: center;
+}
+
+.loader-gif {
+  margin-bottom: 1rem;
+}
+
+.loader-message {
+  font-size: 16px;
+  font-weight: 600;
+  color: #333333;
+  max-width: 80%;
 }

@@ -6,6 +6,7 @@ import {
   signOut,
   onAuthStateChanged // Still useful for reacting to global auth state
 } from 'firebase/auth';
+import Loader from '../components/shared/Loader';
 
 const AuthContext = createContext(null);
 
@@ -97,11 +98,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   if (loadingAuth) {
-    return (
-      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh', fontSize: '1.5rem', color: '#333' }}>
-        Authenticating...
-      </div>
-    );
+    return <Loader message="Authenticating user..." />;
   }
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
