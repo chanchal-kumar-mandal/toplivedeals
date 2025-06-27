@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  
+  <!-- Homepage -->
+  <url>
+    <loc>https://www.toplivedeals.com/</loc>
+    <priority>1.0</priority>
+  </url>
+
+  <!-- Static Pages -->
+  <url><loc>https://www.toplivedeals.com/about-us</loc></url>
+  <url><loc>https://www.toplivedeals.com/contact-us</loc></url>
+  <url><loc>https://www.toplivedeals.com/privacy-policy</loc></url>
+  <url><loc>https://www.toplivedeals.com/terms-of-services</loc></url>
+  <url><loc>https://www.toplivedeals.com/affiliate-disclaimer</loc></url>
+  <url><loc>https://www.toplivedeals.com/faq</loc></url>
+  <url><loc>https://www.toplivedeals.com/submit-deal</loc></url>
+  <url><loc>https://www.toplivedeals.com/categories</loc></url>
+
+  <!-- Optional: Admin panel (noindex if private, or skip in sitemap) -->
+  <!-- <url><loc>https://www.toplivedeals.com/admin</loc></url> -->
+
+  <!-- Optional: Add canonical deal/product URLs dynamically if SSR -->
+  <!-- <url><loc>https://www.toplivedeals.com/deal/some-product-slug</loc></url> -->
+
+</urlset>
