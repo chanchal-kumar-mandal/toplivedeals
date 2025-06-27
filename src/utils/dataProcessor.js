@@ -27,7 +27,6 @@ export const subscribeToProducts = (db, setProducts, setError) => {
       return {
         id: doc.id, // Firestore document ID
         title: data.title || 'Untitled Product',
-        description: data.description || '',
         images: data.images || '',
         affiliateLink: data.affiliateLink || '#',
         priceBefore: Number(data.priceBefore) || 0,

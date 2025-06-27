@@ -1,0 +1,10 @@
+# Allow all bots to access the entire site
+User-agent: *
+Disallow:
+
+# Prevent bots from crawling private/admin panel
+Disallow: /admin/
+
+# Declare sitemap location
+Sitemap: https://www.toplivedeals.com/sitemap.xml
+

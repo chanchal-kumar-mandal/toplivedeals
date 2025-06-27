@@ -2,10 +2,16 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { BrowserRouter as Router, Routes, Route, Link, useNavigate, useLocation } from 'react-router-dom';
 import PrivateRoute from './routes/PrivateRoute';
+// Static Pages
 import AboutUs from './pages/AboutUs';
 import ContactUs from './pages/ContactUs';
-import TermsConditions from './pages/TermsConditions';
+import TermsOfServices from './pages/TermsOfServices';
 import PrivacyPolicy from './pages/PrivacyPolicy';
+import AffiliateDisclaimer from './pages/AffiliateDisclaimer';
+import FAQ from './pages/FAQ';
+import SubmitDeal from './pages/SubmitDeal';
+import Categories from './pages/Categories';
+import NotFound from './pages/NotFound';
 import ProductCard from './components/public/ProductCard';
 import ProductDataManager from './components/admin/ProductDataManager';
 import Login from './components/admin/Login';
@@ -58,7 +64,7 @@ function App() {
   const filteredProducts = products
   .filter(product => {
     // Only include active products
-    const isActive = product.active !== false;
+    const isActive = product.isActive !== false;
 
     const productCategory = product.category?.toLowerCase() ?? '';
     const productApplication = product.application?.toLowerCase() ?? '';
@@ -293,21 +299,39 @@ function App() {
               <ProductDataManager />
             </PrivateRoute>} />
           </Route>
+
+          {/* Static pages */}
           <Route path="/about-us" element={<AboutUs />} />
           <Route path="/contact-us" element={<ContactUs />} />
-          <Route path="/terms-conditions" element={<TermsConditions />} />
+          <Route path="/terms-of-services" element={<TermsOfServices />} />
           <Route path="/privacy-policy" element={<PrivacyPolicy />} />
-          <Route path="*" element={<h2 className="section-title">404: Page Not Found</h2>} />
+          <Route path="/affiliate-disclaimer" element={<AffiliateDisclaimer />} />
+          <Route path="/faq" element={<FAQ />} />
+          <Route path="/submit-deal" element={<SubmitDeal />} />
+          <Route path="/categories" element={<Categories />} />
+
+          {/* Fallback */}
+          <Route path="*" element={<NotFound />} />
         </Routes>
       </main>
       <footer className="main-footer">
         <div className="footer-links-row">
           <Link to="/about-us" className="footer-link">About Us</Link>
           <Link to="/contact-us" className="footer-link">Contact Us</Link>
-          <Link to="/terms-conditions" className="footer-link">Terms & Conditions</Link>
+          <Link to="/terms-of-services" className="footer-link">Terms of Services</Link>
           <Link to="/privacy-policy" className="footer-link">Privacy Policy</Link>
+          <Link to="/affiliate-disclaimer" className="footer-link">Affiliate Disclaimer</Link>
+          <Link to="/faq" className="footer-link">FAQ</Link>
+          <Link to="/submit-deal" className="footer-link">Submit a Deal</Link>
+          <Link to="/categories" className="footer-link">Categories</Link>
         </div>
-        <div className="footer-note">© {new Date().getFullYear()} TopLiveDeals. All rights reserved.<br />As an Amazon Associate, We earn from qualifying purchases. Other affiliate programs apply.</div>
+        <div className="footer-note text-center small mt-4 text-muted">
+          © {new Date().getFullYear()} TopLiveDeals. All rights reserved.
+          <br />
+          Prices and offers are subject to change. Product availability and discounts are determined by respective sellers.
+          <br />
+          We may earn commissions from qualifying purchases made through affiliate links, at no additional cost to you.
+        </div>
       </footer>
     </div>
   );

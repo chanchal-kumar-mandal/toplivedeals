@@ -28,7 +28,7 @@ const ProductDataManager = () => {
   const [editingId, setEditingId] = useState(null);
 
   const [productForm, setProductForm] = useState({
-    title: '', description: '', images: '', affiliateLink: '',
+    title: '', images: '', affiliateLink: '',
     priceBefore: '', priceAfter: '', discount: '', rating: '', ratingCount: '',
     couponCode: '', postedAgo: '', category: 'electronics', application: 'amazon', isTopDeal: false, isActive: true,
     createdAt: '', updatedAt: '',
@@ -72,7 +72,7 @@ const ProductDataManager = () => {
 
   const openAddModal = () => {
     setProductForm({
-      title: '', description: '', images: '', affiliateLink: '',
+      title: '', images: '', affiliateLink: '',
       priceBefore: '', priceAfter: '', discount: '', rating: '', ratingCount: '',
       couponCode: '', postedAgo: '', category: 'electronics', application: 'amazon', isTopDeal: false, isActive: true, createdAt: '', updatedAt: ''
     });
@@ -239,7 +239,7 @@ const ProductDataManager = () => {
             <th>Posted Ago</th>
             <th>Top Deal</th>
             <th>Active</th>
-            <th>Link</th>
+            <th>Affiliate Link</th>
             <th>Actions</th>
             <th>Created At</th>
             <th>Updated At</th>
@@ -281,11 +281,13 @@ const ProductDataManager = () => {
           <Form>
             <Row>
               <Col md={6}><Form.Group><Form.Label><FaTags /> Title</Form.Label><Form.Control name="title" value={productForm.title} onChange={handleChange} isInvalid={!!errors.title} /><Form.Control.Feedback type="invalid">{errors.title}</Form.Control.Feedback></Form.Group></Col>
-              <Col md={6}><Form.Group><Form.Label><FaImage /> Images</Form.Label><Form.Control name="images" value={productForm.images} onChange={handleChange} isInvalid={!!errors.images} /><Form.Control.Feedback type="invalid">{errors.images}</Form.Control.Feedback>{previewImage && <img src={previewImage} alt="Preview" className="mt-2" style={{ maxHeight: '100px' }} />}</Form.Group></Col>
+              <Col md={6}><Form.Group><Form.Label><FaLink /> Affiliate Link</Form.Label><Form.Control name="affiliateLink" value={productForm.affiliateLink} onChange={handleChange} isInvalid={!!errors.affiliateLink} /><Form.Control.Feedback type="invalid">{errors.affiliateLink}</Form.Control.Feedback></Form.Group></Col>
             </Row>
             <Row>
-              <Col md={6}><Form.Group><Form.Label><FaLink /> Affiliate Link</Form.Label><Form.Control name="affiliateLink" value={productForm.affiliateLink} onChange={handleChange} isInvalid={!!errors.affiliateLink} /><Form.Control.Feedback type="invalid">{errors.affiliateLink}</Form.Control.Feedback></Form.Group></Col>
-              <Col md={6}><Form.Group><Form.Label>Description</Form.Label><Form.Control as="textarea" name="description" value={productForm.description} onChange={handleChange} /></Form.Group></Col>
+              <Col md={6}><Form.Group><Form.Label><FaImage /> Images</Form.Label><Form.Control name="images" value={productForm.images} onChange={handleChange} isInvalid={!!errors.images} /><Form.Control.Feedback type="invalid">{errors.images}</Form.Control.Feedback></Form.Group></Col>
+              <Col md={6}>{!previewImage && mode === 'add' && (
+                <div className="mt-2 text-muted">Preview Image will appear here</div>
+              )}{previewImage && <img src={previewImage} alt="Preview" className="mt-2" style={{ maxHeight: '100px' }} />}</Col>
             </Row>
             <Row>
               <Col md={4}><Form.Group><Form.Label>Price Before</Form.Label><Form.Control type="number" name="priceBefore" value={productForm.priceBefore} onChange={handleChange} isInvalid={!!errors.priceBefore} /><Form.Control.Feedback type="invalid">{errors.priceBefore}</Form.Control.Feedback></Form.Group></Col>
@@ -298,14 +300,14 @@ const ProductDataManager = () => {
               <Col md={4}><Form.Group><Form.Label><FaTicketAlt /> Coupon Code</Form.Label><Form.Control name="couponCode" value={productForm.couponCode} onChange={handleChange} /></Form.Group></Col>
             </Row>
             <Row>
-              <Col md={6}><Form.Group><Form.Label>Posted Ago</Form.Label><Form.Control name="postedAgo" value={productForm.postedAgo} onChange={handleChange} /></Form.Group></Col>
-              <Col md={3}><Form.Group><Form.Label>Category</Form.Label><Form.Select name="category" value={productForm.category} onChange={handleChange} isInvalid={!!errors.category}>{categories.map(c => <option key={c}>{c}</option>)}</Form.Select><Form.Control.Feedback type="invalid">{errors.category}</Form.Control.Feedback></Form.Group></Col>
-              <Col md={3}><Form.Group><Form.Label>Platform</Form.Label><Form.Select name="application" value={productForm.application} onChange={handleChange} isInvalid={!!errors.application}>{platforms.map(p => <option key={p}>{p}</option>)}</Form.Select><Form.Control.Feedback type="invalid">{errors.application}</Form.Control.Feedback></Form.Group></Col>
+              <Col md={4}><Form.Group><Form.Label>Posted Ago</Form.Label><Form.Control name="postedAgo" value={productForm.postedAgo} onChange={handleChange} /></Form.Group></Col>
+              <Col md={4}><Form.Group><Form.Label>Category</Form.Label><Form.Select name="category" value={productForm.category} onChange={handleChange} isInvalid={!!errors.category}>{categories.map(c => <option key={c}>{c}</option>)}</Form.Select><Form.Control.Feedback type="invalid">{errors.category}</Form.Control.Feedback></Form.Group></Col>
+              <Col md={4}><Form.Group><Form.Label>Platform</Form.Label><Form.Select name="application" value={productForm.application} onChange={handleChange} isInvalid={!!errors.application}>{platforms.map(p => <option key={p}>{p}</option>)}</Form.Select><Form.Control.Feedback type="invalid">{errors.application}</Form.Control.Feedback></Form.Group></Col>
             </Row>
-            <Form.Check className="mt-2" type="checkbox" label="Top Deal" name="isTopDeal" checked={productForm.isTopDeal} onChange={handleChange} />
-            <Form.Check className="mt-2" type="checkbox" label="Active" name="isActive" checked={productForm.isActive} onChange={handleChange} />
             <Row className="mt-3">
-              <Col md={6}>
+              <Col md={2}><Form.Check className="mt-2" type="checkbox" label="Top Deal" name="isTopDeal" checked={productForm.isTopDeal} onChange={handleChange} /></Col>
+              <Col md={2}><Form.Check className="mt-2" type="checkbox" label="Active" name="isActive" checked={productForm.isActive} onChange={handleChange} /></Col>
+              <Col md={4}>
                 <Form.Group>
                   <Form.Label>Created At</Form.Label>
                   <Form.Control
@@ -315,7 +317,7 @@ const ProductDataManager = () => {
                   />
                 </Form.Group>
               </Col>
-              <Col md={6}>
+              <Col md={4}>
                 <Form.Group>
                   <Form.Label>Updated At</Form.Label>
                   <Form.Control

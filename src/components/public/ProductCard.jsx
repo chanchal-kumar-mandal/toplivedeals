@@ -4,6 +4,7 @@ import { FaTag, FaExternalLinkAlt, FaClock } from 'react-icons/fa';
 import amazonLogo from '../../assets/platforms/amazon.png';
 import flipkartLogo from '../../assets/platforms/flipkart.png';
 
+
 // Helper to get platform info (text and logo for better highlighting)
 const getPlatformDisplay = (platformName) => {
   const lowerCasePlatform = platformName?.toLowerCase() ?? ''; // Safe access
@@ -38,7 +39,19 @@ const ProductCard = ({ product }) => {
   return (
     <div className="card product-horizontal">
       <div className="img-container">
-        <img src={imageUrl} alt={product.title} className="product-main-image" onError={(e) => { e.target.src = 'https://placehold.co/200x200/cccccc/000000?text=Image+Error'; }} /> {/* Added onError fallback */}
+        <img
+          src={imageUrl || 'https://placehold.co/200x200/cccccc/000000?text=No+Image'}
+          alt={product.title}
+          className="product-main-image"
+          loading="lazy"           // ← native lazy-load
+          decoding="async"         // ← hint for async decoding
+          onError={(e) => {
+            e.target.onerror = null;
+            e.target.src =
+              'https://placehold.co/200x200/cccccc/000000?text=Image+Error';
+          }}
+        />
+        {/* Added onError fallback */}
         {/* Only show badge if discount is valid and greater than 0 */}
         {(product.discount && product.discount > 0) && <div className="badge">{product.discount}% OFF</div>}
       </div>
