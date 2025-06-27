@@ -15,6 +15,10 @@ import 'bootstrap-icons/font/bootstrap-icons.css';
 // Your application-specific CSS (should generally be last to override others)
 import './App.css';
 
+// 🟢 GA4 Initialization
+import ReactGA from 'react-ga4';
+ReactGA.initialize('G-XXXXXXXXXX');  // ← Replace with your GA4 Measurement ID
+
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     {/* Wrap your App component (or your top-level component that uses routing) */}

@@ -14,9 +14,8 @@ TopLiveDeals is a dynamic web application designed to be your ultimate destinati
 
 ## Demo Screenshots
 # Desktop
-![image](https://github.com/user-attachments/assets/c1dcd537-090a-4c12-9718-5d291c7ff952)
-![image](https://github.com/user-attachments/assets/6e9f473f-bb0a-4592-807e-41ffb831ced5)
-![image](https://github.com/user-attachments/assets/19c95a20-1f1f-4bb5-bf94-cdd268f30a04)
+![image](https://github.com/user-attachments/assets/d1987361-b06d-499b-ad46-b43e77a12d21)
+![image](https://github.com/user-attachments/assets/08ed84e6-04d0-48a6-9119-24be76392d15)
 
 # Mobile
 ![image](https://github.com/user-attachments/assets/2afc6030-a781-4c3e-80d6-19bb2b5bcde7)
