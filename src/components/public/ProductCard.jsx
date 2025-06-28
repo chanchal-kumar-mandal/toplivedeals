@@ -3,6 +3,7 @@ import RatingStars from './RatingStars';
 import { FaTag, FaExternalLinkAlt, FaClock } from 'react-icons/fa';
 import amazonLogo from '../../assets/platforms/amazon.png';
 import flipkartLogo from '../../assets/platforms/flipkart.png';
+import styles from './ProductCard.module.css';
 
 
 // Helper to get platform info (text and logo for better highlighting)

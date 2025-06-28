@@ -1,0 +1,26 @@
+/* RatingStars.module.css */
+
+.ratingStars {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  flex-shrink: 0;
+}
+
+.starIcon {
+  /* No font-size here — uses default icon size */
+  color: #ffc107; /* Yellow star color */
+  font-size: 11px;
+}
+
+.full {
+  color: #ffc107;
+}
+
+.half {
+  color: #ffc107;
+}
+
+.empty {
+  color: #ddd;
+}

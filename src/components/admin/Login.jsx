@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom'; // Import Link
 import { useAuth } from '../../contexts/UserAuthContext';
+import styles from './Login.module.css';
 
 const Login = () => {
   const [email, setEmail] = useState(''); // Use email for Firebase Auth

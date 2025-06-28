@@ -7,6 +7,7 @@ import { Button, Modal, Form, Row, Col, Table, Container, Pagination } from 'rea
 import { useFirebase } from '../../contexts/FirebaseContext';
 import { subscribeToProducts, addProduct, updateProduct, deleteProduct } from '../../utils/dataProcessor';
 import { serverTimestamp, Timestamp } from "firebase/firestore";
+import styles from './ProductDataManager.module.css';
 
 
 const ProductDataManager = () => {

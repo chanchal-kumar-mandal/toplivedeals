@@ -1,0 +1,197 @@
+/* ProductCard.module.css */
+
+/* ==== Product Card Wrapper ==== */
+.card {
+  background: var(--white);
+  border-radius: 8px;
+  box-shadow: var(--card-shadow);
+  overflow: hidden;
+  position: relative;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--medium-gray);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--card-hover-shadow);
+}
+
+/* ==== Discount Badge ==== */
+.badge {
+  position: absolute;
+  top: 6px;
+  left: 6px;
+  background: var(--accent-green);
+  color: var(--white);
+  padding: 3px 6px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+  text-transform: uppercase;
+  border-radius: 6px;
+  z-index: 10;
+}
+
+/* ==== Image Area ==== */
+.imageContainer {
+  width: 100%;
+  padding-bottom: 65%;
+  position: relative;
+  background-color: var(--white);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-bottom: 1px solid var(--medium-gray);
+}
+
+.image {
+  position: absolute;
+  top: 0;
+  left: 0;
+  object-fit: contain;
+  width: 100%;
+  height: 100%;
+  transition: transform 0.2s ease;
+}
+
+.card:hover .image {
+  transform: scale(1.05);
+}
+
+/* ==== Info Section ==== */
+.info {
+  padding: 6px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  flex-grow: 1;
+}
+
+/* ==== Title ==== */
+.title {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--dark-text);
+  margin-bottom: 3px;
+  line-height: 1.2;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* ==== Features/Tags ==== */
+.features {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2px;
+  margin-bottom: 4px;
+}
+
+.feature {
+  font-size: 8px;
+  background: var(--light-bg);
+  color: var(--dark-gray);
+  padding: 1px 5px;
+  border-radius: 8px;
+  border: 1px solid var(--medium-gray);
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.feature:hover {
+  background-color: var(--medium-gray);
+  color: var(--dark-text);
+}
+
+/* ==== Price + Button Section ==== */
+.bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 4px;
+  flex-wrap: wrap;
+}
+
+.price {
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+}
+
+.oldPrice {
+  font-size: 11px;
+  text-decoration: line-through;
+  color: var(--dark-gray);
+}
+
+.newPrice {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--dark-text);
+  white-space: nowrap;
+}
+
+.buyBtn {
+  background: var(--primary-blue);
+  color: var(--white);
+  padding: 6px 12px;
+  border: none;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(0, 122, 255, 0.2);
+  transition: 0.2s ease-in-out;
+}
+
+.buyBtn:hover {
+  background: var(--secondary-blue);
+  transform: translateY(-1px);
+  box-shadow: 0 3px 10px rgba(0, 122, 255, 0.3);
+}
+
+/* ==== Footer: Ratings + Platform ==== */
+.meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 4px;
+  border-top: 1px solid var(--medium-gray);
+}
+
+.rating {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.starIcon {
+  color: #FFC107;
+  font-size: 11px;
+}
+
+.ratingCount {
+  font-size: 10px;
+  color: var(--dark-gray);
+  margin-left: 3px;
+  white-space: nowrap;
+}
+
+.platform {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--dark-text);
+}
+
+.platformLogo {
+  width: 18px;
+  height: 18px;
+  object-fit: contain;
+}

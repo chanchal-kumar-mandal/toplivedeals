@@ -1,0 +1,749 @@
+/* Header.module.css */
+
+/* === Variables === */
+:root {
+  --primary-blue: #007aff;
+  --secondary-blue: #0056b3;
+  --dark-text: #1a1a1a;
+  --dark-gray: #555;
+  --medium-gray: #e0e0e0;
+  --light-gray: #f0f0f0;
+  --light-bg: #f9f9f9;
+  --white: #ffffff;
+  --content-padding-x-desktop: 2rem; /* Standard desktop padding */
+  --content-padding-x-mobile: 1rem; /* Standard mobile padding */
+  --content-padding-x-small-mobile: 0.8rem; /* Smaller mobile padding */
+}
+
+/* Reset or Base Styles */
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background-color: var(--light-bg);
+}
+
+/* === Main Header Wrapper === */
+.main-header {
+  background-color: var(--white);
+  color: var(--dark-text);
+  padding: 0.5rem var(--content-padding-x-desktop);
+  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.08), 0 0 8px rgba(0, 0, 0, 0.04);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  width: 100%;
+  border-bottom: 1px solid var(--medium-gray);
+  box-sizing: border-box;
+}
+
+.header-content-wrapper {
+  display: flex;
+  justify-content: flex-start; /* Start elements from the left */
+  align-items: center;
+  flex-wrap: nowrap; /* CRUCIAL: Prevent wrapping on desktop */
+  min-height: 50px;
+  gap: 1rem; /* Default gap between major sections */
+}
+
+.logo-wrapper {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0; /* Prevent logo from shrinking */
+  gap: 8px;
+}
+
+.logo-image {
+  width: 50px;
+  height: 50px;
+  object-fit: contain;
+}
+
+.logo {
+  font-size: 18px;
+  white-space: nowrap;
+  font-weight: 600;
+  color: #1a1a1a;
+  text-decoration: none;
+}
+
+/* Primary Nav Links (Live Deals, Top Deals, Coupons) */
+.nav-links {
+  display: flex;
+  gap: 1.2rem;
+  flex-shrink: 0; /* Prevent from shrinking */
+  white-space: nowrap; /* Keep links together */
+  margin-right: auto; /* Push subsequent items to the right */
+}
+
+.nav-item {
+  color: var(--dark-gray);
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 1rem;
+  padding: 0.3rem 0.6rem;
+  border-radius: 6px;
+  transition: background-color 0.2s, color 0.2s, transform 0.1s;
+  cursor: pointer;
+  position: relative;
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.nav-item:hover {
+  background-color: var(--medium-gray);
+  color: var(--dark-text);
+}
+
+.nav-item.active {
+  font-weight: 600;
+  background-color: rgba(0, 122, 255, 0.1);
+  color: var(--primary-blue);
+  box-shadow: none;
+}
+.nav-item.active::after {
+  content: '';
+  position: absolute;
+  bottom: -8px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 20px;
+  height: 2px;
+  background-color: var(--primary-blue);
+  border-radius: 1px;
+}
+
+/* --- Filter Hover Groups (Category, Platform, Discount) --- */
+.filter-hover-group {
+  position: relative;
+  display: flex; /* Display on desktop */
+  align-items: center;
+  flex-shrink: 0; /* Prevent filters from shrinking too much */
+}
+
+.filter-hover-title {
+  cursor: pointer;
+  padding: 0.4rem 0.6rem;
+  border-radius: 6px;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: background-color 0.2s, color 0.2s;
+  color: var(--dark-text);
+  white-space: nowrap;
+}
+
+.filter-hover-title:hover {
+  background-color: var(--medium-gray);
+  color: var(--primary-blue);
+}
+
+.filter-hover-menu {
+  position: absolute;
+  top: calc(100%);
+  left: 0;
+  background-color: var(--white);
+  min-width: 180px;
+  padding: 0.5rem 0;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+  border-radius: 8px;
+  z-index: 1050; /* Higher than header for dropdowns */
+  animation: fadeInDropdown 0.2s ease-in-out;
+  display: none; /* Hidden by default, JS toggles or hover on desktop */
+  flex-direction: column;
+}
+
+@keyframes fadeInDropdown {
+  from {
+    opacity: 0;
+    transform: translateY(5px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.filter-hover-item {
+  padding: 0.5rem 1rem;
+  font-size: 0.9rem;
+  color: var(--dark-text);
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
+  white-space: nowrap;
+}
+
+.filter-hover-item:hover {
+  background-color: transparent; /* No background change */
+  color: var(--primary-blue);   /* Only text color changes */
+}
+
+.filter-hover-item.active {
+  background-color: var(--primary-blue);
+  color: #fff;
+  font-weight: 600;
+}
+
+/* === Search Wrapper Update === */
+.search-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+  margin-left: auto;
+}
+
+.search-input {
+  background-color: var(--light-bg);
+  color: var(--dark-text);
+  border: 1px solid var(--medium-gray);
+  border-radius: 20px;
+  font-size: 0.9rem;
+  height: 35px;
+  outline: none;
+  width: 0;
+  opacity: 0;
+  visibility: hidden;
+  transition: width 0.3s ease, opacity 0.3s, padding 0.3s;
+  padding: 0;
+  padding-left: 2rem;
+  position: absolute;
+  right: 0;
+  box-sizing: border-box;
+}
+
+/* State for opened search input */
+.search-wrapper.search-open .search-input {
+  width: 250px;
+  padding: 0.4rem 1.4rem 0.4rem .8rem;
+  opacity: 1;
+  visibility: visible;
+  margin-right: -0.5rem;
+}
+
+.search-icon {
+  position: static;
+  background: none;
+  border: none;
+  color: var(--dark-gray);
+  font-size: 1rem;
+  cursor: pointer;
+  z-index: 1;
+  padding: 0;
+}
+
+.search-icon:hover {
+  color: var(--primary-blue);
+}
+
+.search-icon:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* === Hamburger Menu Button === */
+.menu-toggle {
+  display: none;
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: var(--dark-text);
+  padding: 0.5rem;
+}
+
+/* === Mobile Sidebar === */
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: -260px;
+  width: 250px;
+  height: 100%;
+  background-color: var(--white);
+  box-shadow: 4px 0 10px rgba(0, 0, 0, 0.1);
+  padding: 1rem;
+  box-sizing: border-box;
+  z-index: 1200;
+  transition: left 0.3s ease;
+  overflow-y: auto;
+}
+
+.sidebar.open {
+  left: 0;
+}
+
+.sidebar-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.close-btn {
+  background: none;
+  border: none;
+  font-size: 1.2rem;
+  cursor: pointer;
+}
+
+/* === Sidebar Links === */
+.sidebar .nav-item,
+.sidebar .filter-hover-group {
+  display: block;
+  padding: 0.6rem 0.4rem;
+  font-size: 0.95rem;
+  color: var(--dark-text);
+  border-bottom: 1px solid var(--light-gray);
+}
+
+.sidebar .nav-item:hover,
+.sidebar .filter-hover-item:hover {
+  background-color: var(--light-bg);
+  color: var(--primary-blue);
+}
+
+.sidebar .filter-hover-menu {
+  position: static;
+  background-color: transparent;
+  box-shadow: none;
+  padding-left: 1rem;
+  display: none;
+  flex-direction: column;
+}
+
+.sidebar .filter-hover-group.submenu-open .filter-hover-menu {
+  display: flex;
+}
+
+/* === Sidebar Overlay === */
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1100;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0,0,0,0.3);
+  display: none;
+}
+
+.overlay.active {
+  display: block;
+}
+
+/* Desktop hover effect for filter menus */
+@media (min-width: 769px) {
+  .filter-hover-group:hover .filter-hover-menu {
+    display: flex;
+  }
+}
+
+/* Small Width Tab/Desktop styles */
+@media (max-width: 1024px) {
+
+  .header-content-wrapper {
+    gap: .5rem;
+  }
+
+  .logo-wrapper {
+    gap: 4px;
+  }
+
+  .logo-wrapper .logo-image {
+      width: 40px;
+      height: 40px;
+      object-fit: contain;
+  }
+
+  .logo {
+    font-size: 16px;
+  }
+
+  .nav-links {
+    gap: .8rem;
+  }
+
+  .nav-item {
+    font-size: 0.8rem;
+    padding: 0.3rem;
+  }
+
+  .filter-hover-title {
+    padding: 0.3rem;
+    font-size: 0.8rem;
+    font-weight: 500;
+    gap: 2px;
+  }
+
+  .filter-hover-menu {
+    top: calc(100%);
+    min-width: 160px;
+    padding: 0.5rem 0;
+  }
+
+  .search-wrapper .search-input {
+    position: absolute;
+    right: -2px;
+  }
+
+}
+
+/* === Mobile Specific Layout === */
+@media (max-width: 768px) {
+  .main-header {
+    padding: 0.4rem var(--content-padding-x-mobile);
+  }
+
+  .header-content-wrapper {
+    justify-content: flex-start; /* Align content to the left */
+    flex-wrap: nowrap; /* Keep it nowrap, content will overflow or use specific orders */
+    gap: 0; /* Reset default gap, use explicit margins */
+  }
+
+  /* Hamburger Menu Button - First on mobile */
+  .menu-toggle {
+    display: block; /* Show hamburger menu on mobile */
+    order: 1; /* Make it the very first item */
+  }
+
+  .logo-wrapper {
+    order: 2; /* Move logo after hamburger */
+    margin-right: 0.5rem;
+  }
+
+  .logo-wrapper .logo-image {
+      width: 30px;
+      height: 30px;
+      object-fit: contain;
+  }
+
+  /* Primary nav links (Live, Top, Coupons) */
+  .nav-links {
+    order: 3; /* After logo, before search */
+    display: flex; /* Keep inline */
+    flex-grow: 0; /* Do not grow, use fixed width for items or overflow */
+    flex-shrink: 0; /* Prevent shrinking beyond content */
+    gap: 0.8rem; /* More compact on mobile */
+    margin-right: 0; /* Reset margins */
+    overflow-x: auto; /* **Enable horizontal scroll for these items***/
+    -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
+    /* Hide scrollbar but keep functionality */
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE and Edge */
+  }
+  .nav-links::-webkit-scrollbar { /* Chrome, Safari, Opera */
+      display: none;
+  }
+  .nav-item {
+    font-size: 0.85rem;
+    padding: 0.3rem 0.6rem;
+    flex-shrink: 0; /* Ensure individual items don't shrink */
+    gap: 3px; 
+  }
+  .nav-item.active::after {
+    bottom: -3px;
+    width: 15px;
+    height: 1px;
+  }
+
+  /* Filter Hover Groups - HIDE on mobile, they will be in mobile-nav-full */
+  .filter-hover-group {
+    display: none; /* HIDE on mobile */
+  }
+
+  /* === Mobile Sidebar === */
+  .mobile-sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 260px;
+    height: 100vh;
+    background-color: var(--white);
+    box-shadow: 2px 0 8px rgba(0, 0, 0, 0.1);
+    z-index: 1200;
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+    overflow-y: auto;
+    animation: slideInSidebar 0.3s ease-out;
+    box-sizing: border-box;
+  }
+
+  /* Animation for sidebar appearance */
+  @keyframes slideInSidebar {
+    from {
+      transform: translateX(-100%);
+      opacity: 0;
+    }
+    to {
+      transform: translateX(0);
+      opacity: 1;
+    }
+  }
+
+  @keyframes slideOutSidebar {
+    from {
+      transform: translateX(0);
+    }
+    to {
+      transform: translateX(-100%);
+    }
+  }
+
+/* Sidebar Sections */
+  .mobile-nav-section {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .mobile-nav-section strong {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--dark-text);
+    margin-bottom: 0.4rem;
+    border-bottom: 1px solid var(--light-gray);
+    padding-bottom: 0.3rem;
+  }
+
+/* Sidebar Item Styles */
+  .mobile-nav-section div {
+    padding: 0.4rem 0.6rem;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    color: var(--dark-gray);
+    background-color: var(--light-bg);
+    cursor: pointer;
+    transition: background-color 0.2s ease, color 0.2s ease;
+  }
+
+  .mobile-nav-section div:hover {
+    background-color: var(--primary-blue);
+    color: white;
+  }
+
+  .mobile-nav-section div.active {
+    background-color: var(--primary-blue);
+    color: white;
+    font-weight: 600;
+  }
+
+  .sidebar-close-btn {
+    align-self: flex-end;
+    font-size: 1.2rem;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--dark-text);
+    margin-bottom: 0.5rem;
+  }
+
+  .sidebar-close-btn:hover {
+    color: var(--primary-blue);
+  }
+
+  .sidebar-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.4);
+    z-index: 1100;
+    animation: fadeInOverlay 0.2s ease-in-out;
+  }
+
+  @keyframes fadeInOverlay {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  /* Search Wrapper and Icon on Mobile - Last item in main header */
+    .search-wrapper {
+      order: 4; /* Place after primary nav links */
+      margin-right: 0.5rem; /* Space from edge */
+      flex-grow: 0;
+      flex-shrink: 0; /* Prevent search from shrinking */
+      width: auto;
+      height: 35px; /* Keep consistent height */
+    }
+
+  /* Search input when open on mobile */
+    .search-wrapper.search-open .search-input {
+      width: calc(100vw - 100px); /* Adjust width to fill remaining screen space after icons */
+      max-width: 250px;
+      height: 30px;
+      position: absolute;
+      font-size: 0.7rem;
+    }
+    .search-input {
+      position: absolute; /* For slide effect */
+      right: -16px; /* Position to the left of the icon */
+    }
+    .search-icon {
+      font-size: 1rem;
+      position: static; /* Remains in normal flow */
+    }
+
+  /* Full-width Mobile Navigation (for filters and admin/auth) */
+    .mobile-nav-full {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      width: 100%;
+      background-color: var(--white);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      z-index: 998;
+      display: none; /* Hidden by default, JS toggles display */
+      flex-direction: column;
+      padding: 1rem var(--content-padding-x-mobile);
+      box-sizing: border-box;
+      transition: transform 0.3s ease-out, opacity 0.3s ease-out;
+      transform: translateY(-10px);
+      opacity: 0;
+    }
+
+    .mobile-nav-full.is-open {
+      display: flex;
+      transform: translateY(0);
+      opacity: 1;
+    }
+
+  /* Styles for items within mobile-nav-full (e.g., filter groups, other nav items) */
+  .mobile-nav-full .nav-item,
+  .mobile-nav-full .filter-hover-group { /* Target both nav-items and filter groups here */
+    width: 100%;
+    justify-content: flex-start;
+    padding: 0.6rem 0.5rem;
+    font-size: 0.95rem;
+    margin: 0; /* Reset margins */
+    border-bottom: 1px solid var(--light-gray);
+    box-sizing: border-box; /* Ensure padding/border is included in width */
+  }
+  .mobile-nav-full .filter-hover-group:last-of-type,
+  .mobile-nav-full .nav-item:last-child {
+    border-bottom: none;
+  }
+
+  .mobile-nav-full .filter-hover-title {
+    width: 100%;
+    justify-content: space-between;
+    padding: 0; /* Padding handled by parent .filter-hover-group */
+    border-bottom: none; /* No border here, parent handles it */
+  }
+  .mobile-nav-full .filter-hover-menu {
+    position: static;
+    width: 100%;
+    box-shadow: none;
+    border-radius: 0;
+    padding: 0;
+    animation: none;
+    display: none; /* JS will toggle this */
+    flex-direction: column;
+    background-color: var(--light-bg);
+  }
+  .mobile-nav-full .filter-hover-group.submenu-open .filter-hover-menu {
+    display: flex;
+  }
+  .mobile-nav-full .filter-hover-item {
+    padding: 0.5rem 1.5rem;
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 600px) {
+  .logo-wrapper {
+    order: 2; /* Move logo after hamburger */
+    margin-right: 0.5rem;
+  }
+
+  .logo {
+    font-size: 14x;
+    font-weight: 500
+  }
+
+  /* Primary nav links (Live, Top, Coupons) */
+  .nav-links {
+    order: 3; /* After logo, before search */
+    display: flex; /* Keep inline */
+    flex-grow: 0; /* Do not grow, use fixed width for items or overflow */
+    flex-shrink: 0; /* Prevent shrinking beyond content */
+    gap: 0.6rem; /* More compact on mobile */
+    margin-right: 0; /* Reset margins */
+    overflow-x: auto; /* **Enable horizontal scroll for these items***/
+    -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
+    /* Hide scrollbar but keep functionality */
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE and Edge */
+  }
+  .nav-links::-webkit-scrollbar { /* Chrome, Safari, Opera */
+      display: none;
+  }
+  .nav-item {
+    font-size: 0.75rem;
+    padding: 0.2rem 0.4rem;
+    flex-shrink: 0; /* Ensure individual items don't shrink */
+    gap: 2px; 
+  }
+  .nav-item.active::after {
+    bottom: -3px;
+    width: 15px;
+    height: 1px;
+  }
+}
+
+@media (max-width: 480px) {
+    .main-header {
+        padding: 0.3rem var(--content-padding-x-small-mobile);
+    }
+
+    .logo-wrapper {
+      order: 2; /* Move logo after hamburger */
+      margin-right: 0.3rem;
+    }
+
+    .logo-wrapper .logo {
+      font-size: 14x;
+      font-weight: 500
+    }
+
+    .nav-links {
+        gap: 0.3rem;
+    }
+
+    .nav-item {
+        font-size: 0.65rem;
+        padding: 0.1rem 0.25rem;
+    }
+
+    .search-input {
+        height: 24px;
+        font-size: 0.65rem;
+        padding: 0.1rem 0.4rem;
+    }
+
+    .search-icon {
+        font-size: 0.9rem;
+    }
+
+    .menu-toggle {
+        font-size: 1.1rem;
+        padding: 0.15rem 0.25rem;
+    }
+
+    .search-wrapper.search-open .search-input {
+      width: calc(100vw - 90px);
+    }
+
+    .search-wrapper {
+      height: 24px;
+    }
+}
+

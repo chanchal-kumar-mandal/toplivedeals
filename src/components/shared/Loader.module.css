@@ -1,0 +1,39 @@
+/* src/components/common/Loader.module.css */
+
+.loaderContainer {
+  height: 100vh;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: var(--white);
+  text-align: center;
+  padding: 1rem;
+  box-sizing: border-box;
+}
+
+.loaderImage {
+  width: 80px;
+  height: 80px;
+  margin-bottom: 1rem;
+  object-fit: contain;
+}
+
+.loaderText {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--dark-text);
+  max-width: 90%;
+}
+
+@media (max-width: 480px) {
+  .loaderImage {
+    width: 60px;
+    height: 60px;
+  }
+
+  .loaderText {
+    font-size: 14px;
+  }
+}
