@@ -6,7 +6,7 @@ const ProductList = ({ activeTab, loadingProducts, filteredProducts }) => {
   const [visibleProducts, setVisibleProducts] = useState([]);
   const [hasMore, setHasMore] = useState(true);
   const [isFetchingMore, setIsFetchingMore] = useState(false);
-  const batchSize = 5;
+  const batchSize = 10;
   const productCountRef = useRef(0);
 
   const fallbackDeals = [
