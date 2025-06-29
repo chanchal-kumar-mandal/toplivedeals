@@ -125,9 +125,12 @@ function App() {
       );
     })
     .sort((a, b) => {
-      const aTime = a.createdAt?.seconds ?? 0;
-      const bTime = b.createdAt?.seconds ?? 0;
-      return bTime - aTime;
+      const getTime = (p) =>
+        p.updatedAt?.seconds ??
+        p.createdAt?.seconds ??
+        (p.updatedAt ? new Date(p.updatedAt).getTime() / 1000 : 0);
+
+      return getTime(b) - getTime(a);
     });
 
   const toggleMobileMenu = () => setIsMobileMenuOpen(!isMobileMenuOpen);
