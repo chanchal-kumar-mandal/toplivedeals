@@ -1,19 +1,19 @@
 /* ProductCard.module.css */
 
-/* ==== Product Card Wrapper ==== */
+/* ==== Product Card (Dynamic Height Info) ==== */
 .card {
   background: var(--white);
   border-radius: 8px;
   box-shadow: var(--card-shadow);
+  transition: transform 0.2s, box-shadow 0.2s;
   overflow: hidden;
   position: relative;
   cursor: pointer;
   display: flex;
   flex-direction: column;
   border: 1px solid var(--medium-gray);
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  width: 100%;
 }
-
 .card:hover {
   transform: translateY(-3px);
   box-shadow: var(--card-hover-shadow);
@@ -23,20 +23,47 @@
 .badge {
   position: absolute;
   top: 6px;
-  left: 6px;
-  background: var(--accent-green);
+  right: 6px;
+  background: var(--red);
   color: var(--white);
   padding: 3px 6px;
-  font-size: 10px;
+  font-size: .63rem;
   font-weight: 700;
   letter-spacing: 0.2px;
   text-transform: uppercase;
   border-radius: 6px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
   z-index: 10;
 }
 
 /* ==== Image Area ==== */
+
 .imageContainer {
+  width: 100%;
+  padding-bottom: 65%;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: var(--white);
+  border-bottom: 1px solid var(--medium-gray);
+}
+
+.imageContainer .productMainImage {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  transition: transform 0.2s ease-in-out;
+}
+.card:hover .imageContainer .productMainImage {
+  transform: scale(1.05);
+}
+
+.imageContainer1 {
   width: 100%;
   padding-bottom: 65%;
   position: relative;
@@ -72,10 +99,11 @@
 
 /* ==== Title ==== */
 .title {
-  font-size: 13px;
+  height: 2rem;
+  font-size: .8rem;
   font-weight: 500;
   color: var(--dark-text);
-  margin-bottom: 3px;
+  margin-bottom: 0;
   line-height: 1.2;
   display: -webkit-box;
   -webkit-line-clamp: 2;
@@ -86,13 +114,12 @@
 /* ==== Features/Tags ==== */
 .features {
   display: flex;
+  justify-content: space-between;
   flex-wrap: wrap;
-  gap: 2px;
-  margin-bottom: 4px;
 }
 
 .feature {
-  font-size: 8px;
+  font-size: .5rem;
   background: var(--light-bg);
   color: var(--dark-gray);
   padding: 1px 5px;
@@ -112,7 +139,7 @@
   display: flex;
   justify-content: space-between;
   align-items: flex-end;
-  gap: 4px;
+  gap: .2rem;
   flex-wrap: wrap;
 }
 
@@ -123,35 +150,16 @@
 }
 
 .oldPrice {
-  font-size: 11px;
+  font-size: .75rem;
   text-decoration: line-through;
   color: var(--dark-gray);
 }
 
 .newPrice {
-  font-size: 15px;
+  font-size: .9rem;
   font-weight: 600;
   color: var(--dark-text);
   white-space: nowrap;
-}
-
-.buyBtn {
-  background: var(--primary-blue);
-  color: var(--white);
-  padding: 6px 12px;
-  border: none;
-  border-radius: 6px;
-  font-size: 12px;
-  font-weight: 500;
-  cursor: pointer;
-  box-shadow: 0 2px 8px rgba(0, 122, 255, 0.2);
-  transition: 0.2s ease-in-out;
-}
-
-.buyBtn:hover {
-  background: var(--secondary-blue);
-  transform: translateY(-1px);
-  box-shadow: 0 3px 10px rgba(0, 122, 255, 0.3);
 }
 
 /* ==== Footer: Ratings + Platform ==== */
@@ -159,8 +167,10 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  gap: 6px;
   padding-top: 4px;
   border-top: 1px solid var(--medium-gray);
+  flex-wrap: nowrap; /* ⛔ Don't wrap on small screen */
 }
 
 .rating {
@@ -184,14 +194,108 @@
 .platform {
   display: flex;
   align-items: center;
-  gap: 3px;
-  font-size: 12px;
-  font-weight: 700;
+  gap: 4px;
+  font-size: .8rem;
+  font-weight: 600;
   color: var(--dark-text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .platformLogo {
+  width: 3.5rem;
+  height: 1.7rem;
+  object-fit: contain;
+  flex-shrink: 0;
+}
+
+/* ==== Footer Info (Further Compacted) ==== */
+.meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-top: 1px solid var(--medium-gray);
+  padding-top: 4px;
+}
+
+/* Platform Display - Highlighted (Further Compacted) */
+.platform-display {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  font-weight: 700;
+  color: var(--dark-text);
+  font-size: 12px;
+  white-space: nowrap;
+}
+.platform-display .platform-logo {
   width: 18px;
   height: 18px;
   object-fit: contain;
+}
+.platform-display .platform-name {
+    font-size: 12px;
+    font-weight: 700;
+}
+
+/* Specific Buy Now Button Styling (Further Compacted) */
+.buyNowBtn {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  background: var(--primary-blue);
+  color: var(--white);
+  padding: 4px 8px;
+  border: none;
+  border-radius: 6px;
+  font-size: .8rem;
+  font-weight: 500;
+  cursor: pointer;
+  white-space: nowrap;
+  flex-shrink: 0;
+  box-shadow: 0 2px 8px rgba(0, 122, 255, 0.2);
+  transition: 0.2s ease-in-out;
+}
+
+.buyNowBtn:hover {
+  background: var(--secondary-blue);
+  transform: translateY(-1px);
+  box-shadow: 0 3px 10px rgba(0, 122, 255, 0.3);
+}
+
+.icon {
+  transition: transform 0.2s;
+}
+
+.productHorizontal {
+  padding: 4px; /* slightly tighter */
+}
+
+
+
+/* === Responsive Styles === */
+
+@media (max-width: 1024px) {
+  .platform-display .platform-logo {
+    width: 16px;
+    height: 16px;
+  }
+  .platform-display .platform-name {
+    font-size: 10px;
+  }
+}
+
+@media (max-width: 768px) {
+  .platform {
+    gap: 2px;
+    font-size: .6rem;
+  }
+
+  .buyNowBtn {
+    gap: 2px;
+    padding: 3px 6px;
+    border-radius: 4px;
+    font-size: .6rem;
+  }
 }

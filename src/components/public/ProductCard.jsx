@@ -1,8 +1,11 @@
 import React, { useState } from 'react';
 import RatingStars from './RatingStars';
 import { FaTag, FaExternalLinkAlt, FaClock } from 'react-icons/fa';
-import amazonLogo from '../../assets/platforms/amazon.png';
-import flipkartLogo from '../../assets/platforms/flipkart.png';
+import amazonLogo from '../../assets/platforms/amazon.jpg';
+import flipkartLogo from '../../assets/platforms/flipkart.jpg';
+import myntraLogo from '../../assets/platforms/myntra.jpg';
+import ajioLogo from '../../assets/platforms/ajio.jpg';
+import { formatPostedTime } from '../../utils/timeUtils';
 import styles from './ProductCard.module.css';
 
 
@@ -10,8 +13,26 @@ import styles from './ProductCard.module.css';
 const getPlatformDisplay = (platformName) => {
   const lowerCasePlatform = platformName?.toLowerCase() ?? ''; // Safe access
   switch (lowerCasePlatform) {
-    case 'amazon': return { logo: <img src={amazonLogo} alt="Amazon" className="platform-logo" />, name: 'Amazon' };
-    case 'flipkart': return { logo: <img src={flipkartLogo} alt="Flipkart" className="platform-logo" />, name: 'Flipkart' };
+    case 'amazon':
+      return {
+        logo: <img src={amazonLogo} alt="Amazon" className={styles.platformLogo} />,
+        name: 'Amazon',
+      };
+    case 'flipkart':
+      return {
+        logo: <img src={flipkartLogo} alt="Flipkart" className={styles.platformLogo} />,
+        name: 'Flipkart',
+      };
+    case 'myntra':
+      return {
+        logo: <img src={myntraLogo} alt="Myntra" className={styles.platformLogo} />,
+        name: 'Myntra',
+      };
+    case 'ajio':
+      return {
+        logo: <img src={ajioLogo} alt="AJIO" className={styles.platformLogo} />,
+        name: 'AJIO',
+      };
     default: return { logo: null, name: platformName ? platformName.charAt(0).toUpperCase() + platformName.slice(1) : 'Unknown' };
   }
 };
@@ -36,14 +57,15 @@ const ProductCard = ({ product }) => {
   };
 
   const platformInfo = getPlatformDisplay(product.application);
+  const timeLabel = formatPostedTime(product.createdAt, product.updatedAt);
 
   return (
-    <div className="card product-horizontal">
-      <div className="img-container">
+    <div className={`${styles.card}`}>
+      <div className={styles.imageContainer}>
         <img
           src={imageUrl || 'https://placehold.co/200x200/cccccc/000000?text=No+Image'}
           alt={product.title}
-          className="product-main-image"
+          className={styles.productMainImage}
           loading="lazy"           // ← native lazy-load
           decoding="async"         // ← hint for async decoding
           onError={(e) => {
@@ -54,41 +76,47 @@ const ProductCard = ({ product }) => {
         />
         {/* Added onError fallback */}
         {/* Only show badge if discount is valid and greater than 0 */}
-        {(product.discount && product.discount > 0) && <div className="badge">{product.discount}% OFF</div>}
+        {(product.discount && product.discount > 0) && <div className={styles.badge}>{product.discount}% OFF</div>}
       </div>
 
-      <div className="info">
-        <h3 className="title two-lines">{product.title}</h3>
+      <div className={styles.info}>
+         <h3 className={styles.title}>{product.title}</h3>
 
-        <div className="feats">
+
+        <div className={styles.features}>
           {product.couponCode && (
-            <span className="feat coupon" onClick={handleCopyCoupon}>
+            <span className={styles.feature} style={{ backgroundColor: '#34c759', color: '#ffffff' }} onClick={handleCopyCoupon}>
               <FaTag style={{ marginRight: 4 }} />
               {couponCopied ? 'Copied!' : product.couponCode}
             </span>
           )}
-          {product.postedAgo && <span className="feat"><FaClock style={{ marginRight: 4 }} />{product.postedAgo}</span>}
+          {timeLabel && (
+            <span className={styles.feature} style={{ marginLeft: 'auto' }}>
+              <FaClock style={{ marginRight: 4 }} />
+              {timeLabel}
+            </span>
+          )}
         </div>
 
-        <div className="bottom">
-          <div className="price">
-            <span className="new">₹{(product.priceAfter ?? 0).toLocaleString()}</span>
-            <span className="old">₹{(product.priceBefore ?? 0).toLocaleString()}</span>
+        <div className={styles.bottom}>
+         <div className={styles.price}>
+          <span className={styles.newPrice}>₹{(product.priceAfter ?? 0).toLocaleString()}</span>
+           <span className={styles.oldPrice}>₹{(product.priceBefore ?? 0).toLocaleString()}</span>
           </div>
-          <div className="rating">
+          <div className={styles.rating}>
             {/* Only render RatingStars if rating is valid and greater than 0 */}
             {product.rating > 0 && <RatingStars rating={product.rating} />}
-            {product.ratingCount > 0 && <span className="rcount">{product.ratingCount.toLocaleString()}</span>}
+            {product.ratingCount > 0 && <span className={styles.ratingCount}>{product.ratingCount.toLocaleString()}</span>}
           </div>
         </div>
 
-        <div className="meta">
-          <div className="platform-display">
+        <div className={styles.meta}>
+          <div className={styles.platform}>
             {platformInfo.logo}
-            <span className="platform-name">{platformInfo.name}</span>
+            {/*<span className="platform-name">{platformInfo.name}</span>*/}
           </div>
-          <button className="btn buy-now-btn" onClick={handleBuyNowClick}>
-            <FaExternalLinkAlt className="icon" />
+          <button className={styles.buyNowBtn} onClick={handleBuyNowClick}>
+            <FaExternalLinkAlt className={styles.icon} />
             <span>Buy Now</span>
           </button>
         </div>

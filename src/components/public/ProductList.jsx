@@ -64,7 +64,7 @@ const ProductList = ({ activeTab, loadingProducts, filteredProducts }) => {
 
   return (
     <>
-      <h2 className="section-title">{heading}</h2>
+      <h2 className={styles.sectionTitle}>{heading}</h2>
 
       {loadingProducts ? (
         <div className={styles.loaderWrapper}>
@@ -72,10 +72,10 @@ const ProductList = ({ activeTab, loadingProducts, filteredProducts }) => {
           <p>Loading Deals...</p>
         </div>
       ) : (
-        <div className="product-grid">
+        <div className={styles.productGrid}>
           {visibleProducts.length > 0 ? (
             visibleProducts.map(product => (
-              <div key={product.id} className="product-card-wrapper">
+              <div key={product.id} className={styles.productCardWrapper}>
                 <ProductCard product={product} />
               </div>
             ))

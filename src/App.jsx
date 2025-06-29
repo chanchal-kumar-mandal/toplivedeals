@@ -55,32 +55,40 @@ function App() {
 
   /*Use cache products */
   useEffect(() => {
-    if (db) {
-      const cached = localStorage.getItem('cachedProducts');
-      const cachedAt = localStorage.getItem('cachedAt');
+  if (!db) return;
 
-      if (cached && cachedAt && Date.now() - cachedAt < 5 * 60 * 1000) {
-        setProducts(JSON.parse(cached));
-        setLoadingProducts(false);
-        return;
+  let unsubscribe;
+
+  const handleProducts = (products) => {
+    const seen = new Set();
+    const unique = [];
+
+    for (const p of products) {
+      if (!seen.has(p.id)) {
+        seen.add(p.id);
+        unique.push(p);
       }
-
-      const unsubscribe = subscribeToProducts(
-        db,
-        (products) => {
-          localStorage.setItem('cachedProducts', JSON.stringify(products));
-          localStorage.setItem('cachedAt', Date.now().toString());
-          setProducts(products);
-          setLoadingProducts(false);
-        },
-        (err) => {
-          console.error(err);
-          setLoadingProducts(false);
-        }
-      );
-      return () => unsubscribe();
     }
-  }, [db]);
+
+    setProducts(unique);
+    setLoadingProducts(false);
+  };
+
+  unsubscribe = subscribeToProducts(
+    db,
+    handleProducts,
+    (err) => {
+      console.error("Firestore error:", err);
+      setLoadingProducts(false);
+    }
+  );
+
+  return () => {
+    if (unsubscribe) {
+      unsubscribe();
+    }
+  };
+}, [db]);
 
 
   const filteredProducts = products
