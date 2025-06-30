@@ -6,6 +6,7 @@ import flipkartLogo from '../../assets/platforms/flipkart.jpg';
 import myntraLogo from '../../assets/platforms/myntra.jpg';
 import ajioLogo from '../../assets/platforms/ajio.jpg';
 import { formatPostedTime } from '../../utils/timeUtils';
+import { trackEvent } from '../../utils/analytics';
 import styles from './ProductCard.module.css';
 
 
@@ -46,6 +47,9 @@ const ProductCard = ({ product }) => {
   const handleBuyNowClick = () => {
     // Safely open affiliate link, default to a placeholder if undefined/null
     window.open(product.affiliateLink || '#', '_blank');
+
+    // Track buy button click event in Google Analytics
+    trackEvent('Buy Now Clicked', 'Product Interaction', product.title);
   };
 
   const handleCopyCoupon = () => {

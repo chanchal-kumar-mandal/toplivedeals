@@ -27,6 +27,7 @@ import Register from './components/admin/Register';
 import ProtectedRoute from './components/admin/ProtectedRoute';
 
 import { subscribeToProducts } from './utils/dataProcessor';
+import { initGA, trackPageView } from './utils/analytics';
 import { FirebaseProvider, useFirebase } from './contexts/FirebaseContext';
 import { AuthProvider } from './contexts/UserAuthContext';
 
@@ -52,6 +53,16 @@ function App() {
   const categories = ['all', 'books', 'electronics', 'fashion', 'home', 'sports', 'kitchen', 'automotive', 'health'];
   const platforms = ['all', 'ajio', 'amazon', 'flipkart', 'meesho', 'myntra', 'nykaa', 'cultfit'];
   const discountRanges = ['all', '10', '20', '30', '40', '50', '60', '70', '80', '90'];
+
+  /**Google Analytics */
+  useEffect(() => {
+    initGA();
+  }, []);
+
+  useEffect(() => {
+    trackPageView(location.pathname + location.search);
+  }, [location]);
+
 
   /*Use cache products */
   useEffect(() => {

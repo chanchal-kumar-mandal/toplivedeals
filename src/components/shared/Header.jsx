@@ -8,6 +8,8 @@ import {
 import logo from '../../assets/TLD-logo-150.png';
 import { useAuth } from '../../contexts/UserAuthContext';
 import styles from './Header.module.css';
+import { trackEvent } from '../../utils/analytics';
+
 
 const Header = ({
   activeTab, setActiveTab, searchTerm, setSearchTerm,
@@ -167,7 +169,15 @@ const Header = ({
               placeholder={getSearchPlaceholder()}
               className={styles['search-input']}
               value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
+              onChange={(e) => {
+                const keyword = e.target.value;
+                setSearchTerm(keyword);
+
+                // Trigger GA4 search tracking if user has typed at least 2 characters
+                if (keyword.trim().length >= 2) {
+                  trackEvent('Search Input', 'Search', keyword);
+                }
+              }}
               disabled={location.pathname !== '/'}
             />
             <button

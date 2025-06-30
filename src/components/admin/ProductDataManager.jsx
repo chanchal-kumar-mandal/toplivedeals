@@ -45,7 +45,7 @@ const ProductDataManager = () => {
   const [filterPlatform, setFilterPlatform] = useState('');
   const [filterCategory, setFilterCategory] = useState('');
   const [filterActive, setFilterActive] = useState('');
-  const [sortConfig, setSortConfig] = useState({ key: 'createdAt', direction: 'desc' });
+  const [sortConfig, setSortConfig] = useState({ key: 'updatedAt', direction: 'desc' });
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
 
@@ -242,8 +242,10 @@ const ProductDataManager = () => {
             <th>Active</th>
             <th>Affiliate Link</th>
             <th>Actions</th>
+            <th onClick={() => handleSort('updatedAt')}>
+              Updated At {sortConfig.key === 'updatedAt' && (sortConfig.direction === 'asc' ? '↑' : '↓')}
+            </th>
             <th>Created At</th>
-            <th>Updated At</th>
           </tr>
         </thead>
         <tbody>
